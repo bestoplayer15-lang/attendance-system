@@ -1,1 +1,1 @@
-web: gunicorn attendance_project.wsgi
+web: gunicorn attendance_project.wsgi:application
