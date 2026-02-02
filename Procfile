@@ -1,1 +1,1 @@
-web: gunicorn attendance_project.wsgi:application
+release: python manage.py migrate && python manage.py shell -c "from attendance.models import Teacher; Teacher.objects.get_or_create(teacher_id='admin', defaults={'name': 'Admin Teacher', 'pin': 'admin123456'}); Teacher.objects.get_or_create(teacher_id='123456', defaults={'name': 'Teacher', 'pin': '232209'})"web: gunicorn attendance_project.wsgi:application
