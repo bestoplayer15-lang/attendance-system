@@ -5,7 +5,13 @@ set -o errexit
 
 pip install -r requirements.txt
 
-python manage.py collectstatic --noinput
+# Create staticfiles directory if it doesn't exist
+mkdir -p staticfiles
+
+# Collect static files
+python manage.py collectstatic --noinput --clear || true
+
+# Run migrations
 python manage.py migrate
 
 # Create admin teacher if it doesn't exist
