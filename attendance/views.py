@@ -165,10 +165,25 @@ def teacher_sign_in(request):
 
 
 def teacher_sign_out(request):
+    teacher_name = None
+    if request.session.get('is_teacher'):
+        # Get teacher name before clearing session
+        from .models import Teacher
+        try:
+            teacher = Teacher.objects.get(teacher_id=request.session.get('teacher_id'))
+            teacher_name = teacher.name
+        except:
+            pass
+    
     request.session.pop('is_teacher', None)
     request.session.pop('teacher_id', None)
-    messages.info(request, 'Teacher signed out.')
-    return redirect('attendance:home')
+    request.session.flush()  # Clear entire session
+    
+    if teacher_name:
+        messages.success(request, f'Goodbye, {teacher_name}. You have been signed out.')
+    else:
+        messages.info(request, 'Signed out successfully.')
+    return redirect('attendance:sign_in')
 
 
 @teacher_or_staff_required
