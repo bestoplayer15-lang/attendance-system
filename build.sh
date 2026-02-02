@@ -14,10 +14,14 @@ python manage.py collectstatic --noinput --clear --verbosity 2
 
 echo "==> Static files collected successfully"
 
-# Run migrations
-python manage.py migrate
+# Run migrations with verbose output
+echo "==> Running migrations..."
+python manage.py migrate --verbosity 2
+
+echo "==> Migrations completed successfully"
 
 # Create admin teacher if it doesn't exist
+echo "==> Creating teacher accounts..."
 python manage.py shell -c "
 from attendance.models import Teacher
 if not Teacher.objects.filter(teacher_id='admin').exists():
@@ -32,3 +36,5 @@ if not Teacher.objects.filter(teacher_id='123456').exists():
 else:
     print('Teacher 123456 already exists')
 "
+
+echo "==> Build completed successfully!"
